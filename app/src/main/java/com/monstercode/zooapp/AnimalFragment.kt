@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.monstercode.zooapp.dummy.DummyContent
 import com.monstercode.zooapp.room.Animal
 
 /**
@@ -26,8 +26,18 @@ class AnimalFragment : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
 
+    private lateinit var animalViewModel: AnimalViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        /**
+         * Attach view model in parent activity to this activity
+         * so the two can use the same data
+         */
+        animalViewModel = activity?.run {
+            ViewModelProviders.of(this).get(AnimalViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
@@ -38,33 +48,23 @@ class AnimalFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_animal_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_animal_list, container, false) as RecyclerView
+        view.layoutManager = LinearLayoutManager(context)
 
+        val itemDecorator =
+            DividerItemDecoration(activity!!, DividerItemDecoration.VERTICAL)
+        itemDecorator.setDrawable(
+            ContextCompat.getDrawable(
+                activity!!,
+                R.drawable.divider
+            )!!
+        )
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
+        view.addItemDecoration(itemDecorator)
+        animalViewModel.animals.observe(this, Observer {
+            view.adapter = AnimalRecyclerViewAdapter(it, listener)
+        })
 
-
-                val itemDecorator =
-                    DividerItemDecoration(activity!!, DividerItemDecoration.VERTICAL)
-                itemDecorator.setDrawable(
-                    ContextCompat.getDrawable(
-                        activity!!,
-                        R.drawable.divider
-                    )!!
-                )
-
-                this.addItemDecoration(itemDecorator)
-
-
-                adapter = AnimalRecyclerViewAdapter(DummyContent.ITEMS, listener)
-            }
-        }
         return view
     }
 
@@ -73,7 +73,7 @@ class AnimalFragment : Fragment() {
         if (context is OnListFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnListFragmentInteractionListener")
         }
     }
 
