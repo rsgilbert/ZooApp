@@ -1,16 +1,14 @@
 package com.monstercode.zooapp
 
-import androidx.recyclerview.widget.RecyclerView
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
-
+import androidx.recyclerview.widget.RecyclerView
 import com.monstercode.zooapp.AnimalFragment.OnListFragmentInteractionListener
 import com.monstercode.zooapp.room.Animal
 import de.hdodenhof.circleimageview.CircleImageView
-
 import kotlinx.android.synthetic.main.fragment_animal.view.*
 
 /**
@@ -37,6 +35,7 @@ class AnimalRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_animal, parent, false)
+        Utils.setClickableAnimation(parent.context, view)
         return ViewHolder(view)
     }
 
