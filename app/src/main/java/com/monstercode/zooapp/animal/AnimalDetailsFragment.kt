@@ -1,13 +1,18 @@
-package com.monstercode.zooapp
+package com.monstercode.zooapp.animal
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.monstercode.zooapp.QuizActivity
+import com.monstercode.zooapp.R
 import org.jetbrains.anko.find
+import org.jetbrains.anko.sdk27.coroutines.onClick
 
 
 class AnimalDetailsFragment : Fragment() {
@@ -37,13 +42,18 @@ class AnimalDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.animal_details_fragment, container, false)
-        val animal = animalViewModel.animalLiveData.value
+        val animalCategory = animalViewModel.selectedAnimalCategoryLiveData.value
 
         val detailsName = view.find<TextView>(R.id.details_name)
         val detailsSummary = view.find<TextView>(R.id.details_summary)
-        detailsName.text = animal?.name
-        detailsSummary.text = animal?.summary
+        val goToQuizButton = view.find<Button>(R.id.go_to_quiz)
+        detailsName.text = animalCategory?.name
+        detailsSummary.text = animalCategory?.summary
 
+        goToQuizButton.onClick {
+            val intent = Intent(activity, QuizActivity::class.java)
+            startActivity(intent)
+        }
         return view
     }
 

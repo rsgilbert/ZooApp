@@ -2,5 +2,8 @@
     <string name="app_name">Zoo App</string>
     <string name="action_settings">Settings</string>
     <string name="shared_prefs">com.monstercode.zooapp.MySharedPreferences</string>
+    <string name="go_to_quiz_button_text">GO TO QUIZ</string>
+    <string name="quiz_label">Quiz</string>
+    <string name="animal_label">Animals</string>
 
 </resources>

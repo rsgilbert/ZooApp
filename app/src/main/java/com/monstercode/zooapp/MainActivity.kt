@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
-import com.monstercode.zooapp.room.Animal
+import com.monstercode.zooapp.animal.AnimalDetailsFragment
+import com.monstercode.zooapp.animal.AnimalFragment
+import com.monstercode.zooapp.animal.AnimalViewModel
+import com.monstercode.zooapp.room.AnimalCategory
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), AnimalFragment.OnListFragmentInteractionListener {
@@ -20,7 +23,10 @@ class MainActivity : AppCompatActivity(), AnimalFragment.OnListFragmentInteracti
 
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.fragment_container, AnimalFragment())
+        fragmentTransaction.add(
+            R.id.fragment_container,
+            AnimalFragment()
+        )
         fragmentTransaction.commit()
     }
 
@@ -40,13 +46,16 @@ class MainActivity : AppCompatActivity(), AnimalFragment.OnListFragmentInteracti
      * This function is invoked when you click on an item on the list
      * It changes the fragment from AnimalListFragment to AnimalDetailsFragment
      */
-    override fun onListFragmentInteraction(animal: Animal?) {
+    override fun onListFragmentInteraction(animalCategory: AnimalCategory?) {
         supportActionBar!!.setHomeButtonEnabled(true)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        animalViewModel.setAnimal(animal!!)
+        animalViewModel.setSelectedAnimalCategory(animalCategory!!)
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment_container, AnimalDetailsFragment())
+        fragmentTransaction.replace(
+            R.id.fragment_container,
+            AnimalDetailsFragment()
+        )
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }

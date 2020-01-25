@@ -1,4 +1,4 @@
-package com.monstercode.zooapp
+package com.monstercode.zooapp.animal
 
 import android.content.Context
 import android.os.Bundle
@@ -12,7 +12,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.monstercode.zooapp.room.Animal
+import com.monstercode.zooapp.R
+import com.monstercode.zooapp.room.AnimalCategory
 
 /**
  * A fragment representing a list of Items.
@@ -61,8 +62,12 @@ class AnimalFragment : Fragment() {
         )
 
         view.addItemDecoration(itemDecorator)
-        animalViewModel.animals.observe(this, Observer {
-            view.adapter = AnimalRecyclerViewAdapter(it, listener)
+        animalViewModel.animalCategoryLiveData.observe(this, Observer {
+            view.adapter =
+                AnimalRecyclerViewAdapter(
+                    it,
+                    listener
+                )
         })
 
         return view
@@ -95,7 +100,7 @@ class AnimalFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: Animal?)
+        fun onListFragmentInteraction(animalCategory: AnimalCategory?)
     }
 
     companion object {
