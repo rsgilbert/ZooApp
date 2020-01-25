@@ -5,17 +5,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.monstercode.zooapp.room.Animal
-import com.monstercode.zooapp.room.AnimalCategory
-import com.monstercode.zooapp.room.AnimalCategoryDao
-import com.monstercode.zooapp.room.AnimalDao
+import com.monstercode.zooapp.room.*
 
 /**
  * Database used by the app, defines the tables to include
  * as well as Data Entry Objects (dao) to use
  */
 
-@Database(entities = [AnimalCategory::class, Animal::class], version = 1, exportSchema = false)
+@Database(
+    entities = [AnimalCategory::class, Animal::class, Question::class],
+    version = 1,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     /**
      *  Access the database daos asynchronously by calling (eg):
@@ -25,6 +26,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun animalDao(): AnimalDao
 
+    abstract fun questionDao(): QuestionDao
     /**
      * Do not make changes to this companion object unless if you know
      * what you are doing.

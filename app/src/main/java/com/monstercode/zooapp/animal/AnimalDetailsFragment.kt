@@ -50,8 +50,10 @@ class AnimalDetailsFragment : Fragment() {
         detailsName.text = animalCategory?.name
         detailsSummary.text = animalCategory?.summary
 
+        // change to quiz activity supplying the animal_category_id
         goToQuizButton.onClick {
             val intent = Intent(activity, QuizActivity::class.java)
+            intent.putExtra("animalCategoryId", animalCategory!!.id)
             startActivity(intent)
         }
         return view

@@ -51,6 +51,9 @@ class Utils {
             clipboard.setPrimaryClip(clip)
         }
 
+        fun logd(context: Context, message: String) {
+            Log.d(context.javaClass.simpleName, message)
+        }
 
 //        fun emptyDb(context: Context) {
 //            doAsync {

@@ -16,7 +16,6 @@ import androidx.room.PrimaryKey
         )
     ]
 )
-
 data class Animal(
     @PrimaryKey
     val id: String,

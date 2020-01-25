@@ -12,6 +12,7 @@ import org.jetbrains.anko.doAsync
 class AnimalViewModel(application: Application) : AndroidViewModel(application) {
     val context = application.applicationContext
     val tag = "AnimalViewModel"
+    val selectedAnimalCategoryLiveData = MutableLiveData<AnimalCategory>()
 
     init {
         insertAnimalCategory()
@@ -38,7 +39,6 @@ class AnimalViewModel(application: Application) : AndroidViewModel(application) 
 
     val animalCategoryLiveData = AppDatabase(context).animalCategoryDao().all()
 
-    val selectedAnimalCategoryLiveData = MutableLiveData<AnimalCategory>().apply { value = null }
 
     fun setSelectedAnimalCategory(animalCategory: AnimalCategory) =
         selectedAnimalCategoryLiveData.apply { value = animalCategory }

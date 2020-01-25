@@ -1,26 +1,24 @@
 package com.monstercode.zooapp.quiz
 
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.monstercode.zooapp.R
 import com.monstercode.zooapp.room.Animal
+import org.jetbrains.anko.find
 
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [AnimalFragment.OnListFragmentInteractionListener] interface.
+ * [QuizFragment.OnListFragmentInteractionListener] interface.
  */
-class QuestionFragment : Fragment() {
+class QuizFragment : Fragment() {
 
     // TODO: Customize parameters
     private var columnCount = 1
@@ -28,6 +26,7 @@ class QuestionFragment : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
 
     private lateinit var quizViewModel: QuizViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +39,7 @@ class QuestionFragment : Fragment() {
             ViewModelProviders.of(this).get(QuizViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
+
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
@@ -49,37 +49,21 @@ class QuestionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_animal_list, container, false) as RecyclerView
-        view.layoutManager = LinearLayoutManager(context)
+        val view = inflater.inflate(R.layout.fragment_quiz, container, false)
 
-        val itemDecorator =
-            DividerItemDecoration(activity!!, DividerItemDecoration.VERTICAL)
-        itemDecorator.setDrawable(
-            ContextCompat.getDrawable(
-                activity!!,
-                R.drawable.divider
-            )!!
-        )
 
-        view.addItemDecoration(itemDecorator)
-//        animalViewModel.animals.observe(this, Observer {
-//            view.adapter =
-//                AnimalRecyclerViewAdapter(
-//                    it,
-//                    listener
-//                )
-//        })
+        val question = view.find<TextView>(R.id.quiz_question)
+
+        // Set question and other quiz information basing on quiz live data
+        quizViewModel.questionLiveData.observe(this, Observer {
+
+            question.text = it.question
+
+        })
+
+
 
         return view
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException("$context must implement OnListFragmentInteractionListener")
-        }
     }
 
     override fun onDetach() {
@@ -108,13 +92,13 @@ class QuestionFragment : Fragment() {
         // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
 
-//        // TODO: Customize parameter initialization
-//        @JvmStatic
-//        fun newInstance(columnCount: Int) =
-//            AnimalFragment().apply {
-//                arguments = Bundle().apply {
-//                    putInt(ARG_COLUMN_COUNT, columnCount)
-//                }
-//            }
+        // TODO: Customize parameter initialization
+        @JvmStatic
+        fun newInstance(columnCount: Int) =
+            QuizFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_COLUMN_COUNT, columnCount)
+                }
+            }
     }
 }

@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity(), AnimalFragment.OnListFragmentInteracti
 
     private lateinit var animalViewModel: AnimalViewModel
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(), AnimalFragment.OnListFragmentInteracti
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         animalViewModel.setSelectedAnimalCategory(animalCategory!!)
+
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(
             R.id.fragment_container,
