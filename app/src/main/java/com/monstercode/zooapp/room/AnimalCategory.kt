@@ -10,9 +10,9 @@ data class AnimalCategory(
 
     val name: String,
 
-    val summary: String? = "",
+    val summary: String? = null,
 
-    val info: String? = null,
+    val description: String? = null,
 
-    val profile_image: String? = ""
+    val profile_image: String? = null
 )

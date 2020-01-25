@@ -6,15 +6,16 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
-
 @Dao
-interface AnimalCategoryDao {
+interface AnimalDao {
 
-    @Query("SELECT * FROM animalcategory")
-    fun all(): LiveData<List<AnimalCategory>>
+
+    @Query("SELECT * FROM animal WHERE animal_category_id=:animalCategoryId")
+    fun animalsByCategory(animalCategoryId: String): LiveData<List<Animal>>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertOne(animalCategory: AnimalCategory): Long
+    fun insertOne(animal: Animal): Long
+
 
 }

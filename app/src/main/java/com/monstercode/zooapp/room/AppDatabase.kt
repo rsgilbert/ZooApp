@@ -5,22 +5,25 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.monstercode.zooapp.room.Animal
 import com.monstercode.zooapp.room.AnimalCategory
 import com.monstercode.zooapp.room.AnimalCategoryDao
+import com.monstercode.zooapp.room.AnimalDao
 
 /**
  * Database used by the app, defines the tables to include
  * as well as Data Entry Objects (dao) to use
  */
 
-@Database(entities = [AnimalCategory::class], version = 1, exportSchema = false)
+@Database(entities = [AnimalCategory::class, Animal::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     /**
      *  Access the database daos asynchronously by calling (eg):
      *      AppDatabase(context).announcementDao().all()
      */
     abstract fun animalCategoryDao(): AnimalCategoryDao
-//    abstract fun animalDao(): AnimalDao
+
+    abstract fun animalDao(): AnimalDao
 
     /**
      * Do not make changes to this companion object unless if you know
