@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.monstercode.zooapp.quiz.QuizFragment
 import com.monstercode.zooapp.quiz.QuizViewModel
 import com.monstercode.zooapp.room.Choice
-import org.jetbrains.anko.toast
 
 class QuizActivity : AppCompatActivity(), QuizFragment.OnListFragmentInteractionListener {
 
@@ -21,8 +20,6 @@ class QuizActivity : AppCompatActivity(), QuizFragment.OnListFragmentInteraction
         quizViewModel = ViewModelProviders.of(this).get(QuizViewModel::class.java)
 
         val animalCategoryId = intent.getStringExtra("animalCategoryId")
-
-        toast(animalCategoryId!!)
 
         quizViewModel.setAnimalCategoryId(animalCategoryId)
 
@@ -39,7 +36,6 @@ class QuizActivity : AppCompatActivity(), QuizFragment.OnListFragmentInteraction
      * It changes the fragment from AnimalListFragment to AnimalDetailsFragment
      */
     override fun onListFragmentInteraction(choice: Choice) {
-        toast("Changing fragment based on listener")
         changeFragment()
         quizViewModel.incrementQuestionNumberLiveData()
     }

@@ -30,7 +30,7 @@ class AnimalViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun insertAnimal() {
-        val animal = Animal(id = "1", english_name = "Black Chimpazee", animal_category_id = "3")
+        val animal = Animal(id = "2", english_name = "Crested Crane", animal_category_id = "3")
         doAsync {
             val animals = AppDatabase(context).animalDao().insertOne(animal)
             Log.d(tag, "Inserted $animals animals into db")

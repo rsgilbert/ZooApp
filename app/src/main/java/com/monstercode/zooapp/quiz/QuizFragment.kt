@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.monstercode.zooapp.R
 import com.monstercode.zooapp.room.Choice
 import kotlinx.android.synthetic.main.fragment_quiz.view.*
-import org.jetbrains.anko.find
+import org.jetbrains.anko.support.v4.toast
 
 /**
  * A fragment representing a list of Items.
@@ -71,6 +70,7 @@ class QuizFragment : Fragment() {
         recyclerView.addItemDecoration(itemDecorator)
 
         quizViewModel.choicesLiveData.observe(this, Observer {
+            toast("New list of choices, list is empty = ${it.isEmpty()}")
             recyclerView.adapter =
                 QuizRecyclerViewAdapter(
                     it,
@@ -78,14 +78,10 @@ class QuizFragment : Fragment() {
                 )
         })
 
-
-
-        val question = view.find<TextView>(R.id.quiz_question)
-
         // Set question and other quiz information basing on quiz live data
         quizViewModel.questionLiveData.observe(this, Observer {
 
-            question.text = it.question
+            view.quiz_question.text = it.question
 
         })
 

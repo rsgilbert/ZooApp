@@ -23,24 +23,18 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         }
 
     val questionLiveData: LiveData<Question> = Transformations.map(questionsListLiveData) {
-        it.first()
+        val q = it.first()
+        logd(context, q.toString())
+        q
     }
 
     // liveDataMerger observes other LiveData objects
     var liveDataMerger: MediatorLiveData<*> = MediatorLiveData<Any?>()
+
     init {
-        liveDataMerger.addSource(questionLiveData, Observer {
-            var count = 1
 
-            liveDataMerger.value = it
-            count++
-            logd(context, "Count is $count")
-            if (count > 10) {
-                logd(context, "Greater than 10")
-            }
-
-        })
         insertQuestion()
+        insertChoice()
     }
 
 
@@ -66,7 +60,53 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
             Utils.logd(context, "Inserted $questionsInserted2 questions2")
         }
 
-        Utils.logd(context, "Inserted a question")
+
+    }
+
+    private fun insertChoice() {
+        doAsync {
+            var choice = Choice(
+                id = "2",
+                choice = "Do you prefer yellow flies",
+                animal_id = "2",
+                question_id = "k"
+            )
+            AppDatabase(context).choiceDao().insertOne(choice)
+
+            choice = Choice(
+                id = "2q",
+                choice = "I feel like chicken tonight",
+                animal_id = "2",
+                question_id = "k"
+            )
+            AppDatabase(context).choiceDao().insertOne(choice)
+
+            choice = Choice(
+                id = "12kk3",
+                choice = "Coronavirus is pretty deadly",
+                animal_id = "2",
+                question_id = "k"
+            )
+            AppDatabase(context).choiceDao().insertOne(choice)
+
+            choice = Choice(
+                id = "123",
+                choice = "Gorillas are pretty",
+                animal_id = "2",
+                question_id = "k"
+            )
+            AppDatabase(context).choiceDao().insertOne(choice)
+
+            choice = Choice(
+                id = "1233",
+                choice = "Potatoes like maize alot",
+                animal_id = "2",
+                question_id = "k"
+            )
+            var choices = AppDatabase(context).choiceDao().insertOne(choice)
+
+            logd(context, "Inserted $choices choices")
+        }
     }
 
 

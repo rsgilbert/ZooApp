@@ -52,7 +52,7 @@ class Utils {
         }
 
         fun logd(context: Context, message: String) {
-            Log.d(context.javaClass.simpleName, message)
+            Log.d(context.javaClass.name, message)
         }
 
 //        fun emptyDb(context: Context) {
