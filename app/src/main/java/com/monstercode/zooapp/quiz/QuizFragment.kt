@@ -1,16 +1,20 @@
 package com.monstercode.zooapp.quiz
 
-
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.monstercode.zooapp.R
-import com.monstercode.zooapp.room.Animal
+import com.monstercode.zooapp.room.Choice
+import kotlinx.android.synthetic.main.fragment_quiz.view.*
 import org.jetbrains.anko.find
 
 /**
@@ -49,7 +53,31 @@ class QuizFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.fragment_quiz, container, false)
+
+        val recyclerView = view.choice_list
+
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        val itemDecorator =
+            DividerItemDecoration(activity!!, DividerItemDecoration.VERTICAL)
+        itemDecorator.setDrawable(
+            ContextCompat.getDrawable(
+                activity!!,
+                R.drawable.divider
+            )!!
+        )
+        recyclerView.addItemDecoration(itemDecorator)
+
+        quizViewModel.choicesLiveData.observe(this, Observer {
+            recyclerView.adapter =
+                QuizRecyclerViewAdapter(
+                    it,
+                    listener
+                )
+        })
+
 
 
         val question = view.find<TextView>(R.id.quiz_question)
@@ -61,10 +89,20 @@ class QuizFragment : Fragment() {
 
         })
 
-
-
         return view
     }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnListFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement OnListFragmentInteractionListener")
+        }
+    }
+
+
 
     override fun onDetach() {
         super.onDetach()
@@ -84,7 +122,7 @@ class QuizFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: Animal?)
+        fun onListFragmentInteraction(choice: Choice)
     }
 
     companion object {

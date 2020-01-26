@@ -4,9 +4,9 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.monstercode.skyllaconnect.room.AppDatabase
 import com.monstercode.zooapp.room.Animal
 import com.monstercode.zooapp.room.AnimalCategory
+import com.monstercode.zooapp.room.AppDatabase
 import org.jetbrains.anko.doAsync
 
 class AnimalViewModel(application: Application) : AndroidViewModel(application) {

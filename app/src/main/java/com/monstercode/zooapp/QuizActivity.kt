@@ -5,9 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.monstercode.zooapp.quiz.QuizFragment
 import com.monstercode.zooapp.quiz.QuizViewModel
+import com.monstercode.zooapp.room.Choice
 import org.jetbrains.anko.toast
 
-class QuizActivity : AppCompatActivity() {
+class QuizActivity : AppCompatActivity(), QuizFragment.OnListFragmentInteractionListener {
 
     private lateinit var quizViewModel: QuizViewModel
 
@@ -32,6 +33,29 @@ class QuizActivity : AppCompatActivity() {
         )
         fragmentTransaction.commit()
     }
+
+    /**
+     * This function is invoked when you click on an item on the list
+     * It changes the fragment from AnimalListFragment to AnimalDetailsFragment
+     */
+    override fun onListFragmentInteraction(choice: Choice) {
+        toast("Changing fragment based on listener")
+        changeFragment()
+        quizViewModel.incrementQuestionNumberLiveData()
+    }
+
+    // Change the question being asked on the quiz fragment
+    private fun changeFragment() {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.add(
+            R.id.fragment_container,
+            QuizFragment()
+        )
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+
+
 
 
 }

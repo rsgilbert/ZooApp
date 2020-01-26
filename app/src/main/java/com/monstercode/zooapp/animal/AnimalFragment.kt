@@ -49,7 +49,7 @@ class AnimalFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_animal_list, container, false) as RecyclerView
+        val view = inflater.inflate(R.layout.animal_list, container, false) as RecyclerView
         view.layoutManager = LinearLayoutManager(context)
 
         val itemDecorator =

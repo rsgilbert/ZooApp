@@ -1,4 +1,4 @@
-package com.monstercode.skyllaconnect.room
+package com.monstercode.zooapp.room
 
 
 import android.content.Context
@@ -13,7 +13,13 @@ import com.monstercode.zooapp.room.*
  */
 
 @Database(
-    entities = [AnimalCategory::class, Animal::class, Question::class],
+    entities = [
+        AnimalCategory::class,
+        Animal::class,
+        Question::class,
+        Choice::class,
+        Image::class
+    ],
     version = 1,
     exportSchema = false
 )
@@ -27,6 +33,11 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun animalDao(): AnimalDao
 
     abstract fun questionDao(): QuestionDao
+
+    abstract fun choiceDao(): ChoiceDao
+
+    abstract fun imageDao(): ImageDao
+
     /**
      * Do not make changes to this companion object unless if you know
      * what you are doing.

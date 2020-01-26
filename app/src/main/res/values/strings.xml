@@ -5,5 +5,5 @@
     <string name="go_to_quiz_button_text">GO TO QUIZ</string>
     <string name="quiz_label">Quiz</string>
     <string name="animal_label">Animals</string>
-
+    <string name="next_question_button_text">NEXT</string>
 </resources>
