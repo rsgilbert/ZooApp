@@ -2,11 +2,11 @@ package com.monstercode.zooapp.quiz
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.monstercode.zooapp.Utils
 import com.monstercode.zooapp.Utils.Companion.logd
 import com.monstercode.zooapp.room.AppDatabase
 import com.monstercode.zooapp.room.Choice
 import com.monstercode.zooapp.room.Question
+import com.monstercode.zooapp.room.QuestionWithChoices
 import org.jetbrains.anko.doAsync
 
 
@@ -17,12 +17,13 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     private val attempts = MutableLiveData<MutableList<Question>>()
     private val questionNumberLiveData = MutableLiveData<Int>().apply { value = 0 }
 
-    private val questionsListLiveData: LiveData<List<Question>> =
+    private val questionsListLiveData: LiveData<List<QuestionWithChoices>> =
         Transformations.switchMap(animalCategoryId) {
             AppDatabase(context).questionDao().questionsByCategory(it)
         }
 
-    val questionLiveData: LiveData<Question> = Transformations.map(questionsListLiveData) {
+    val questionLiveData: LiveData<QuestionWithChoices> =
+        Transformations.map(questionsListLiveData) {
         val q = it.first()
         logd(context, q.toString())
         q

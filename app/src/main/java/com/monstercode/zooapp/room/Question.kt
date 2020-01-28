@@ -21,6 +21,16 @@ data class Question(
 
     val question: String,
 
+    val animal_category_id: String
+
+)
+
+data class QuestionWithChoices(
+    @PrimaryKey
+    val id: String,
+
+    val question: String,
+
     val animal_category_id: String,
 
     @Relation(parentColumn="id", entityColumn = "question_id")

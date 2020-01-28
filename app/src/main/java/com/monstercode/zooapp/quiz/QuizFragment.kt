@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.monstercode.zooapp.R
 import com.monstercode.zooapp.room.Choice
 import kotlinx.android.synthetic.main.fragment_quiz.view.*
-import org.jetbrains.anko.support.v4.toast
 
 /**
  * A fragment representing a list of Items.
@@ -59,6 +58,10 @@ class QuizFragment : Fragment() {
 
         recyclerView.layoutManager = LinearLayoutManager(context)
 
+        /**
+         * itemDecorator is necessary so as to put lines in between the list items for clarity and
+         * also to give it a professional look
+         */
         val itemDecorator =
             DividerItemDecoration(activity!!, DividerItemDecoration.VERTICAL)
         itemDecorator.setDrawable(
@@ -69,14 +72,14 @@ class QuizFragment : Fragment() {
         )
         recyclerView.addItemDecoration(itemDecorator)
 
-//        quizViewModel.choicesLiveData.observe(this, Observer {
-//            toast("New list of choices, list is empty = ${it.isEmpty()}")
-//            recyclerView.adapter =
-//                QuizRecyclerViewAdapter(
-//                    it,
-//                    listener
-//                )
-//        })
+        /**
+         *   This is necessary to prevent the recyclerView from scrolling on its own
+         *   while the question is not scrolling. It makes for a better scrolling interface.
+         *   https://developer.android.com/reference/android/support/v4/view/NestedScrollingChild.html#setNestedScrollingEnabled(boolean)
+         */
+
+        recyclerView.isNestedScrollingEnabled = false
+
 
         // Set question and other quiz information basing on quiz live data
         quizViewModel.questionLiveData.observe(this, Observer {

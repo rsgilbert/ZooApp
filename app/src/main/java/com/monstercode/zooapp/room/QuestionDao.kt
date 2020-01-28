@@ -10,7 +10,7 @@ import androidx.room.Query
 interface QuestionDao {
 
     @Query("SELECT * FROM question WHERE animal_category_id=:animal_category_id")
-    fun questionsByCategory(animal_category_id: String): LiveData<List<Question>>
+    fun questionsByCategory(animal_category_id: String): LiveData<List<QuestionWithChoices>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOne(question: Question): Long
