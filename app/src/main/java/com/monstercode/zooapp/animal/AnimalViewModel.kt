@@ -21,7 +21,7 @@ class AnimalViewModel(application: Application) : AndroidViewModel(application) 
 
 
     fun insertAnimalCategory() {
-        val animalCategory = AnimalCategory(id = "3", name = "Chimpazee", summary = "Very first")
+        val animalCategory = AnimalCategory(id = "5", name = "Termite", summary = "Tiny and frail")
 
         doAsync {
             val categories = AppDatabase(context).animalCategoryDao().insertOne(animalCategory)

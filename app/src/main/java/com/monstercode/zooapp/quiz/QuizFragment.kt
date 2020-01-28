@@ -69,20 +69,24 @@ class QuizFragment : Fragment() {
         )
         recyclerView.addItemDecoration(itemDecorator)
 
-        quizViewModel.choicesLiveData.observe(this, Observer {
-            toast("New list of choices, list is empty = ${it.isEmpty()}")
-            recyclerView.adapter =
-                QuizRecyclerViewAdapter(
-                    it,
-                    listener
-                )
-        })
+//        quizViewModel.choicesLiveData.observe(this, Observer {
+//            toast("New list of choices, list is empty = ${it.isEmpty()}")
+//            recyclerView.adapter =
+//                QuizRecyclerViewAdapter(
+//                    it,
+//                    listener
+//                )
+//        })
 
         // Set question and other quiz information basing on quiz live data
         quizViewModel.questionLiveData.observe(this, Observer {
 
             view.quiz_question.text = it.question
-
+            recyclerView.adapter =
+                QuizRecyclerViewAdapter(
+                    it.choices,
+                    listener
+                )
         })
 
         return view

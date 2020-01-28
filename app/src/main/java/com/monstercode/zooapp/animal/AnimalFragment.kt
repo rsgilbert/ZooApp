@@ -50,7 +50,7 @@ class AnimalFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.animal_list, container, false) as RecyclerView
-        view.layoutManager = LinearLayoutManager(context)
+        view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         val itemDecorator =
             DividerItemDecoration(activity!!, DividerItemDecoration.VERTICAL)

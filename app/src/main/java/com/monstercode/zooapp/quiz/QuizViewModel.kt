@@ -33,7 +33,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
 
-        insertQuestion()
+//        insertQuestion()
         insertChoice()
     }
 
@@ -48,20 +48,20 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         questionNumberLiveData.value = (questionNumberLiveData.value ?: 0) + 1
     }
 
-    private fun insertQuestion() {
-        val question =
-            Question(id = "k", question = "Do you like Gorillas", animal_category_id = "3")
-
-        val question2 =
-            Question(id = "kk", question = "Are chimpazees dead?", animal_category_id = "3")
-        doAsync {
-            val questionsInserted = AppDatabase(context).questionDao().insertOne(question)
-            val questionsInserted2 = AppDatabase(context).questionDao().insertOne(question2)
-            Utils.logd(context, "Inserted $questionsInserted2 questions2")
-        }
-
-
-    }
+//    private fun insertQuestion() {
+//        val question =
+//            Question(id = "k", question = "Do you like Gorillas", animal_category_id = "3", choices = List<Choice>)
+//
+//        val question2 =
+//            Question(id = "kk", question = "Are chimpazees dead?", animal_category_id = "3")
+//        doAsync {
+//            val questionsInserted = AppDatabase(context).questionDao().insertOne(question)
+//            val questionsInserted2 = AppDatabase(context).questionDao().insertOne(question2)
+//            Utils.logd(context, "Inserted $questionsInserted2 questions2")
+//        }
+//
+//
+//    }
 
     private fun insertChoice() {
         doAsync {
@@ -113,9 +113,4 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     fun setAnimalCategoryId(id: String) =
         animalCategoryId.apply { value = id }
 
-    fun setNextQuestion() {
-        attempts.apply { value?.add(questionLiveData.value!!) }
-        logd(context, attempts.value.toString())
-
-    }
 }

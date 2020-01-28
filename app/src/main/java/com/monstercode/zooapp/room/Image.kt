@@ -1,30 +1,27 @@
 package com.monstercode.zooapp.room
 
+
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 
 @Entity(
     foreignKeys = [
         ForeignKey(
-            entity = AnimalCategory::class,
+            entity = Animal::class,
             parentColumns = ["id"],
-            childColumns = ["animal_category_id"],
+            childColumns = ["animal_id"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
-data class Question(
+data class Image (
     @PrimaryKey
     val id: String,
 
-    val question: String,
+    val src: String,
 
-    val animal_category_id: String,
-
-    @Relation(parentColumn="id", entityColumn = "question_id")
-    val choices: List<Choice>
+    val animal_id: String
 
 )
 
