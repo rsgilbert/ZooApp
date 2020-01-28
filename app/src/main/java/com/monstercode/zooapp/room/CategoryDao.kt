@@ -8,13 +8,16 @@ import androidx.room.Query
 
 
 @Dao
-interface AnimalCategoryDao {
+interface CategoryDao {
 
-    @Query("SELECT * FROM animalcategory")
-    fun all(): LiveData<List<AnimalCategory>>
+    @Query("SELECT * FROM category")
+    fun all(): LiveData<List<Category>>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertOne(animalCategory: AnimalCategory): Long
+    fun insertOne(category: Category): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(categories: List<Category>)
 
 }

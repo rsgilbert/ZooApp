@@ -2,6 +2,8 @@ package com.monstercode.zooapp.quiz
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.monstercode.skyllaconnect.Request
+import com.monstercode.zooapp.Utils
 import com.monstercode.zooapp.Utils.Companion.logd
 import com.monstercode.zooapp.room.AppDatabase
 import com.monstercode.zooapp.room.Choice
@@ -24,20 +26,51 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
     val questionLiveData: LiveData<QuestionWithChoices> =
         Transformations.map(questionsListLiveData) {
-        val q = it.first()
-        logd(context, q.toString())
-        q
+            if (it.isEmpty()) null else it.first()
     }
 
     // liveDataMerger observes other LiveData objects
     var liveDataMerger: MediatorLiveData<*> = MediatorLiveData<Any?>()
 
     init {
-
-//        insertQuestion()
-        insertChoice()
+        updateQuiz()
     }
 
+    fun updateQuiz() {
+        doAsync {
+            try {
+                val questionsResponse = Request.questionsCall()
+                if (questionsResponse.isSuccessful) {
+                    val questions = questionsResponse.body()
+                    Utils.logd(context, questions.toString())
+                    AppDatabase(context).questionDao().insertAll(questions)
+                } else {
+                    Utils.logd(context, "Failed to fetch animals: ${questionsResponse.code()}")
+                    Utils.snack(context, "Failed to fetch animals: ${questionsResponse.code()}")
+                }
+            } catch (e: Exception) {
+                Utils.snack(context, "Failed to fetch animals. Not connected")
+                Utils.logd(context, "Error getting animals : $e")
+            }
+
+            try {
+                val choicesResponse = Request.choicesCall()
+                Utils.logd(context, choicesResponse.toString())
+                if (choicesResponse.isSuccessful) {
+                    val choices = choicesResponse.body()
+                    AppDatabase(context).choiceDao().insertAll(choices)
+                } else {
+                    logd(context, "Failed to fetch categories: ${choicesResponse.code()}")
+                    Utils.snack(context, "Failed to fetch categories: ${choicesResponse.code()}")
+                }
+            } catch (e: Exception) {
+                logd(context, "Error getting categories : $e")
+            }
+
+
+        }
+
+    }
 
     val choicesLiveData: LiveData<List<Choice>> =
         Transformations.switchMap(questionLiveData) {
@@ -49,66 +82,6 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         questionNumberLiveData.value = (questionNumberLiveData.value ?: 0) + 1
     }
 
-//    private fun insertQuestion() {
-//        val question =
-//            Question(id = "k", question = "Do you like Gorillas", animal_category_id = "3", choices = List<Choice>)
-//
-//        val question2 =
-//            Question(id = "kk", question = "Are chimpazees dead?", animal_category_id = "3")
-//        doAsync {
-//            val questionsInserted = AppDatabase(context).questionDao().insertOne(question)
-//            val questionsInserted2 = AppDatabase(context).questionDao().insertOne(question2)
-//            Utils.logd(context, "Inserted $questionsInserted2 questions2")
-//        }
-//
-//
-//    }
-
-    private fun insertChoice() {
-        doAsync {
-            var choice = Choice(
-                id = "2",
-                choice = "Do you prefer yellow flies",
-                animal_id = "2",
-                question_id = "k"
-            )
-            AppDatabase(context).choiceDao().insertOne(choice)
-
-            choice = Choice(
-                id = "2q",
-                choice = "I feel like chicken tonight",
-                animal_id = "2",
-                question_id = "k"
-            )
-            AppDatabase(context).choiceDao().insertOne(choice)
-
-            choice = Choice(
-                id = "12kk3",
-                choice = "Coronavirus is pretty deadly",
-                animal_id = "2",
-                question_id = "k"
-            )
-            AppDatabase(context).choiceDao().insertOne(choice)
-
-            choice = Choice(
-                id = "123",
-                choice = "Gorillas are pretty",
-                animal_id = "2",
-                question_id = "k"
-            )
-            AppDatabase(context).choiceDao().insertOne(choice)
-
-            choice = Choice(
-                id = "1233",
-                choice = "Potatoes like maize alot",
-                animal_id = "2",
-                question_id = "k"
-            )
-            var choices = AppDatabase(context).choiceDao().insertOne(choice)
-
-            logd(context, "Inserted $choices choices")
-        }
-    }
 
 
     fun setAnimalCategoryId(id: String) =

@@ -1,46 +1,64 @@
 package com.monstercode.zooapp.animal
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.monstercode.zooapp.room.Animal
-import com.monstercode.zooapp.room.AnimalCategory
+import com.monstercode.skyllaconnect.Request
+import com.monstercode.zooapp.Utils
 import com.monstercode.zooapp.room.AppDatabase
+import com.monstercode.zooapp.room.Category
 import org.jetbrains.anko.doAsync
 
 class AnimalViewModel(application: Application) : AndroidViewModel(application) {
     val context = application.applicationContext
     val tag = "AnimalViewModel"
-    val selectedAnimalCategoryLiveData = MutableLiveData<AnimalCategory>()
+    val selectedAnimalCategoryLiveData = MutableLiveData<Category>()
 
     init {
-        insertAnimalCategory()
-        insertAnimal()
+
+        updateAnimals()
     }
 
 
-    fun insertAnimalCategory() {
-        val animalCategory = AnimalCategory(id = "5", name = "Termite", summary = "Tiny and frail")
-
+    fun updateAnimals() {
         doAsync {
-            val categories = AppDatabase(context).animalCategoryDao().insertOne(animalCategory)
-            Log.d(tag, "Inserted $categories animal categories into db")
+            try {
+                val animalsResponse = Request.animalsCall()
+                if (animalsResponse.isSuccessful) {
+                    val animals = animalsResponse.body()
+                    Utils.logd(context, animals.toString())
+                    AppDatabase(context).animalDao().insertAll(animals)
+                } else {
+                    Utils.logd(context, "Failed to fetch animals: ${animalsResponse.code()}")
+                    Utils.snack(context, "Failed to fetch animals: ${animalsResponse.code()}")
+                }
+            } catch (e: Exception) {
+                Utils.snack(context, "Failed to fetch animals. Not connected")
+                Utils.logd(context, "Error getting animals : $e")
+            }
+
+            try {
+                val categoriesResponse = Request.categoriesCall()
+                Utils.logd(context, categoriesResponse.toString())
+                if (categoriesResponse.isSuccessful) {
+                    val categories = categoriesResponse.body()
+                    AppDatabase(context).categoryDao().insertAll(categories)
+                } else {
+                    Utils.logd(context, "Failed to fetch categories: ${categoriesResponse.code()}")
+                    Utils.snack(context, "Failed to fetch categories: ${categoriesResponse.code()}")
+                }
+            } catch (e: Exception) {
+                Utils.logd(context, "Error getting categories : $e")
+            }
+
+
         }
     }
 
-    fun insertAnimal() {
-        val animal = Animal(id = "2", english_name = "Crested Crane", animal_category_id = "3")
-        doAsync {
-            val animals = AppDatabase(context).animalDao().insertOne(animal)
-            Log.d(tag, "Inserted $animals animals into db")
-        }
-    }
-
-    val animalCategoryLiveData = AppDatabase(context).animalCategoryDao().all()
+    val animalCategoryLiveData = AppDatabase(context).categoryDao().all()
 
 
-    fun setSelectedAnimalCategory(animalCategory: AnimalCategory) =
-        selectedAnimalCategoryLiveData.apply { value = animalCategory }
+    fun setSelectedAnimalCategory(category: Category) =
+        selectedAnimalCategoryLiveData.apply { value = category }
 
 }

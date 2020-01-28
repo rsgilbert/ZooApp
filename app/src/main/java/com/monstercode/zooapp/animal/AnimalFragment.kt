@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.monstercode.zooapp.R
-import com.monstercode.zooapp.room.AnimalCategory
+import com.monstercode.zooapp.room.Category
 
 /**
  * A fragment representing a list of Items.
@@ -50,7 +50,7 @@ class AnimalFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.animal_list, container, false) as RecyclerView
-        view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view.layoutManager = LinearLayoutManager(context)
 
         val itemDecorator =
             DividerItemDecoration(activity!!, DividerItemDecoration.VERTICAL)
@@ -100,7 +100,7 @@ class AnimalFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(animalCategory: AnimalCategory?)
+        fun onListFragmentInteraction(category: Category?)
     }
 
     companion object {

@@ -78,7 +78,6 @@ class QuizFragment : Fragment() {
          *   https://developer.android.com/reference/android/support/v4/view/NestedScrollingChild.html#setNestedScrollingEnabled(boolean)
          */
 
-        recyclerView.isNestedScrollingEnabled = false
 
 
         // Set question and other quiz information basing on quiz live data

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.monstercode.zooapp.R
 import com.monstercode.zooapp.Utils
 import com.monstercode.zooapp.animal.AnimalFragment.OnListFragmentInteractionListener
-import com.monstercode.zooapp.room.AnimalCategory
+import com.monstercode.zooapp.room.Category
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_animal.view.*
 
@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_animal.view.*
  * TODO: Replace the implementation with code for your data type.
  */
 class AnimalRecyclerViewAdapter(
-    private val mValues: List<AnimalCategory>,
+    private val mValues: List<Category>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<AnimalRecyclerViewAdapter.ViewHolder>() {
 
@@ -27,7 +27,7 @@ class AnimalRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as AnimalCategory
+            val item = v.tag as Category
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)

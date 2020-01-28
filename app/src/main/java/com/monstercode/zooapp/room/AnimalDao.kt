@@ -10,12 +10,15 @@ import androidx.room.Query
 interface AnimalDao {
 
 
-    @Query("SELECT * FROM animal WHERE animal_category_id=:animalCategoryId")
-    fun animalsByCategory(animalCategoryId: String): LiveData<List<Animal>>
+    @Query("SELECT * FROM animal WHERE category_id=:categoryId")
+    fun animalsByCategory(categoryId: String): LiveData<List<Animal>>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOne(animal: Animal): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(animals: List<Animal>)
 
 
 }

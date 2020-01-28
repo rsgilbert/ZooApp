@@ -24,7 +24,7 @@
             android:name="com.monstercode.zooapp.QuizFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:nestedScrollingEnabled="false"
             app:layoutManager="LinearLayoutManager"
             tools:context=".quiz.QuizFragment"
             tools:listitem="@layout/recycler_choices" />

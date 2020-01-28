@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.monstercode.zooapp.animal.AnimalDetailsFragment
 import com.monstercode.zooapp.animal.AnimalFragment
 import com.monstercode.zooapp.animal.AnimalViewModel
-import com.monstercode.zooapp.room.AnimalCategory
+import com.monstercode.zooapp.room.Category
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), AnimalFragment.OnListFragmentInteractionListener {
@@ -47,11 +47,11 @@ class MainActivity : AppCompatActivity(), AnimalFragment.OnListFragmentInteracti
      * This function is invoked when you click on an item on the list
      * It changes the fragment from AnimalListFragment to AnimalDetailsFragment
      */
-    override fun onListFragmentInteraction(animalCategory: AnimalCategory?) {
+    override fun onListFragmentInteraction(category: Category?) {
         supportActionBar!!.setHomeButtonEnabled(true)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        animalViewModel.setSelectedAnimalCategory(animalCategory!!)
+        animalViewModel.setSelectedAnimalCategory(category!!)
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(

@@ -5,16 +5,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.monstercode.zooapp.room.*
 
 /**
- * Database used by the app, defines the tables to include
+ * SQLite Database used by the app, defines the tables to include
  * as well as Data Entry Objects (dao) to use
  */
 
 @Database(
     entities = [
-        AnimalCategory::class,
+        Category::class,
         Animal::class,
         Question::class,
         Choice::class,
@@ -28,7 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
      *  Access the database daos asynchronously by calling (eg):
      *      AppDatabase(context).announcementDao().all()
      */
-    abstract fun animalCategoryDao(): AnimalCategoryDao
+    abstract fun categoryDao(): CategoryDao
 
     abstract fun animalDao(): AnimalDao
 

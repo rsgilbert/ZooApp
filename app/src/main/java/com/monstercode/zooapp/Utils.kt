@@ -1,11 +1,16 @@
 package com.monstercode.zooapp
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.Context
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.NonNull
+import org.jetbrains.anko.design.indefiniteSnackbar
+import org.jetbrains.anko.design.longSnackbar
+import org.jetbrains.anko.find
 
 
 class Utils {
@@ -53,6 +58,31 @@ class Utils {
 
         fun logd(context: Context, message: String) {
             Log.d(context.javaClass.name, message)
+        }
+
+        // https://stackoverflow.com/questions/1109022/close-hide-the-android-soft-keyboard
+        fun hideKeyboard(activity: Activity) {
+            val imm: InputMethodManager =
+                activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            //Find the currently focused view, so we can grab the correct window token from it.
+            var view = activity.currentFocus
+            //If no view currently has focus, create a new one, just so we can grab a window token from it
+            if (view == null) {
+                view = View(activity)
+            }
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
+
+        fun snack(context: Context, message: String) {
+            val activity = context as Activity
+            hideKeyboard(activity)
+            activity.find<View>(android.R.id.content).longSnackbar(message).show()
+        }
+
+        fun indefiniteSnack(activity: Activity, message: String) {
+            hideKeyboard(activity)
+            activity.find<View>(android.R.id.content).indefiniteSnackbar(message).show()
         }
 
 //        fun emptyDb(context: Context) {
