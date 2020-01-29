@@ -9,4 +9,5 @@
     <color name="lightDark">#cccccc</color>
     <color name="newGray">#464646</color>
     <color name="newDark">#302F2F</color>
+    <color name="lightGreen">@android:color/holo_green_dark</color>
 </resources>

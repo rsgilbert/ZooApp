@@ -8,4 +8,4 @@
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
     tools:context=".animal.AnimalFragment"
-    tools:listitem="@layout/fragment_animal" />
+    tools:listitem="@layout/recycler_animal" />

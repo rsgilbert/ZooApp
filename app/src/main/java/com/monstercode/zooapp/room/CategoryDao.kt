@@ -1,17 +1,15 @@
 package com.monstercode.zooapp.room
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 
 @Dao
 interface CategoryDao {
 
+    @Transaction
     @Query("SELECT * FROM category")
-    fun all(): LiveData<List<Category>>
+    fun all(): LiveData<List<CategoryWithAnimals>>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -92,5 +92,6 @@ dependencies {
 
     // MaterialSearchView
     implementation 'com.github.claudiodegio:MsvSearch:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 
 }

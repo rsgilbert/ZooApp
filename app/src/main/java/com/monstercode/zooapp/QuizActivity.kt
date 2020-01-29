@@ -33,17 +33,18 @@ class QuizActivity : AppCompatActivity(), QuizFragment.OnListFragmentInteraction
 
     /**
      * This function is invoked when you click on an item on the list
-     * It changes the fragment from AnimalListFragment to AnimalDetailsFragment
+     * It changes the fragment from AnimalListFragment to DetailFragment
      */
     override fun onListFragmentInteraction(choice: Choice) {
         changeFragment()
-        quizViewModel.incrementQuestionNumberLiveData()
+        quizViewModel.setQuestionLiveData()
     }
 
-    // Change the question being asked on the quiz fragment
+
+    // Change the question and choices displayed on the quiz fragment
     private fun changeFragment() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(
+        fragmentTransaction.replace(
             R.id.fragment_container,
             QuizFragment()
         )

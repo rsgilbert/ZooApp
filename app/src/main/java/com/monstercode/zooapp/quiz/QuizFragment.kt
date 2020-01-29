@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.monstercode.zooapp.R
 import com.monstercode.zooapp.room.Choice
@@ -58,37 +56,21 @@ class QuizFragment : Fragment() {
 
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        /**
-         * itemDecorator is necessary so as to put lines in between the list items for clarity and
-         * also to give it a professional look
-         */
-        val itemDecorator =
-            DividerItemDecoration(activity!!, DividerItemDecoration.VERTICAL)
-        itemDecorator.setDrawable(
-            ContextCompat.getDrawable(
-                activity!!,
-                R.drawable.divider
-            )!!
-        )
-        recyclerView.addItemDecoration(itemDecorator)
-
-        /**
-         *   This is necessary to prevent the recyclerView from scrolling on its own
-         *   while the question is not scrolling. It makes for a better scrolling interface.
-         *   https://developer.android.com/reference/android/support/v4/view/NestedScrollingChild.html#setNestedScrollingEnabled(boolean)
-         */
-
 
 
         // Set question and other quiz information basing on quiz live data
         quizViewModel.questionLiveData.observe(this, Observer {
 
-            view.quiz_question.text = it.question
-            recyclerView.adapter =
-                QuizRecyclerViewAdapter(
-                    it.choices,
-                    listener
-                )
+            if (it != null) {
+                view.quiz_question.text = it.question
+                recyclerView.adapter =
+                    QuizRecyclerViewAdapter(
+                        it.choices,
+                        activity = activity!!,
+                        context = context!!,
+                        mListener = listener
+                    )
+            }
         })
 
         return view

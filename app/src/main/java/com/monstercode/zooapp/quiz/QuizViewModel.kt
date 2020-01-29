@@ -1,7 +1,10 @@
 package com.monstercode.zooapp.quiz
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.monstercode.skyllaconnect.Request
 import com.monstercode.zooapp.Utils
 import com.monstercode.zooapp.Utils.Companion.logd
@@ -24,19 +27,24 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
             AppDatabase(context).questionDao().questionsByCategory(it)
         }
 
-    val questionLiveData: LiveData<QuestionWithChoices> =
-        Transformations.map(questionsListLiveData) {
-            if (it.isEmpty()) null else it.first()
-    }
 
     // liveDataMerger observes other LiveData objects
-    var liveDataMerger: MediatorLiveData<*> = MediatorLiveData<Any?>()
+    var questionLiveData: LiveData<QuestionWithChoices> =
+        Transformations.switchMap(animalCategoryId) {
+            AppDatabase(context).questionDao().oneQuestionByCategory(it)
+        }
 
+    fun setQuestionLiveData() {
+        questionLiveData =
+            AppDatabase(context).questionDao().oneQuestionByCategory(animalCategoryId.value!!)
+
+    }
     init {
         updateQuiz()
+
     }
 
-    fun updateQuiz() {
+    private fun updateQuiz() {
         doAsync {
             try {
                 val questionsResponse = Request.questionsCall()
@@ -46,10 +54,8 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                     AppDatabase(context).questionDao().insertAll(questions)
                 } else {
                     Utils.logd(context, "Failed to fetch animals: ${questionsResponse.code()}")
-                    Utils.snack(context, "Failed to fetch animals: ${questionsResponse.code()}")
                 }
             } catch (e: Exception) {
-                Utils.snack(context, "Failed to fetch animals. Not connected")
                 Utils.logd(context, "Error getting animals : $e")
             }
 
@@ -58,10 +64,10 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 Utils.logd(context, choicesResponse.toString())
                 if (choicesResponse.isSuccessful) {
                     val choices = choicesResponse.body()
+                    logd(context, "choices are $choices")
                     AppDatabase(context).choiceDao().insertAll(choices)
                 } else {
                     logd(context, "Failed to fetch categories: ${choicesResponse.code()}")
-                    Utils.snack(context, "Failed to fetch categories: ${choicesResponse.code()}")
                 }
             } catch (e: Exception) {
                 logd(context, "Error getting categories : $e")
@@ -83,8 +89,8 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-
     fun setAnimalCategoryId(id: String) =
         animalCategoryId.apply { value = id }
-
 }
+
+

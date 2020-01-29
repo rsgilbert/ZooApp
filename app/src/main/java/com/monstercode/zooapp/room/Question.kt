@@ -3,6 +3,7 @@ package com.monstercode.zooapp.room
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import java.io.Serializable
 
 @Entity
 data class Question(
@@ -13,7 +14,7 @@ data class Question(
 
     val category_id: String
 
-)
+) : Serializable
 
 data class QuestionWithChoices(
     @PrimaryKey
@@ -26,5 +27,5 @@ data class QuestionWithChoices(
     @Relation(parentColumn="id", entityColumn = "question_id")
     val choices: List<Choice>
 
-)
+) : Serializable
 

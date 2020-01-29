@@ -6,13 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import com.monstercode.skyllaconnect.Request
 import com.monstercode.zooapp.Utils
 import com.monstercode.zooapp.room.AppDatabase
-import com.monstercode.zooapp.room.Category
+import com.monstercode.zooapp.room.CategoryWithAnimals
 import org.jetbrains.anko.doAsync
 
 class AnimalViewModel(application: Application) : AndroidViewModel(application) {
     val context = application.applicationContext
     val tag = "AnimalViewModel"
-    val selectedAnimalCategoryLiveData = MutableLiveData<Category>()
+    val selectedAnimalCategoryLiveData = MutableLiveData<CategoryWithAnimals>()
 
     init {
 
@@ -30,10 +30,8 @@ class AnimalViewModel(application: Application) : AndroidViewModel(application) 
                     AppDatabase(context).animalDao().insertAll(animals)
                 } else {
                     Utils.logd(context, "Failed to fetch animals: ${animalsResponse.code()}")
-                    Utils.snack(context, "Failed to fetch animals: ${animalsResponse.code()}")
                 }
             } catch (e: Exception) {
-                Utils.snack(context, "Failed to fetch animals. Not connected")
                 Utils.logd(context, "Error getting animals : $e")
             }
 
@@ -45,7 +43,6 @@ class AnimalViewModel(application: Application) : AndroidViewModel(application) 
                     AppDatabase(context).categoryDao().insertAll(categories)
                 } else {
                     Utils.logd(context, "Failed to fetch categories: ${categoriesResponse.code()}")
-                    Utils.snack(context, "Failed to fetch categories: ${categoriesResponse.code()}")
                 }
             } catch (e: Exception) {
                 Utils.logd(context, "Error getting categories : $e")
@@ -58,7 +55,7 @@ class AnimalViewModel(application: Application) : AndroidViewModel(application) 
     val animalCategoryLiveData = AppDatabase(context).categoryDao().all()
 
 
-    fun setSelectedAnimalCategory(category: Category) =
+    fun setSelectedAnimalCategory(category: CategoryWithAnimals) =
         selectedAnimalCategoryLiveData.apply { value = category }
 
 }

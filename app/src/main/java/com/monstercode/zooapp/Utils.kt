@@ -3,6 +3,7 @@ package com.monstercode.zooapp
 import android.app.Activity
 import android.content.ClipData
 import android.content.Context
+import android.text.Html
 import android.util.Log
 import android.util.Patterns
 import android.view.View
@@ -74,16 +75,21 @@ class Utils {
         }
 
 
-        fun snack(context: Context, message: String) {
-            val activity = context as Activity
+        fun snack(activity: Activity, message: String) {
             hideKeyboard(activity)
-            activity.find<View>(android.R.id.content).longSnackbar(message).show()
+            return activity.find<View>(android.R.id.content).longSnackbar(message).show()
         }
 
         fun indefiniteSnack(activity: Activity, message: String) {
             hideKeyboard(activity)
-            activity.find<View>(android.R.id.content).indefiniteSnackbar(message).show()
+            return activity.find<View>(android.R.id.content).indefiniteSnackbar(message).show()
         }
+
+
+        fun fromHtml(htmlText: String) =
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
+                Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY)
+            else Html.fromHtml(htmlText)
 
 //        fun emptyDb(context: Context) {
 //            doAsync {

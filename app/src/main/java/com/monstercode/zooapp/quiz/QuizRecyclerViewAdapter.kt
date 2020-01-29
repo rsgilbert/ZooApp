@@ -1,17 +1,20 @@
 package com.monstercode.zooapp.quiz
 
 
+import android.app.Activity
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.monstercode.zooapp.R
 import com.monstercode.zooapp.Utils
 import com.monstercode.zooapp.room.Choice
-import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.fragment_quiz.view.*
 import kotlinx.android.synthetic.main.recycler_choices.view.*
+import org.jetbrains.anko.design.indefiniteSnackbar
+import org.jetbrains.anko.find
+import org.jetbrains.anko.sdk27.coroutines.onClick
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
@@ -19,7 +22,9 @@ import kotlinx.android.synthetic.main.recycler_choices.view.*
  * TODO: Replace the implementation with code for your data type.
  */
 class QuizRecyclerViewAdapter(
-    private val mValues: List<Choice>,
+    private val choices: List<Choice>,
+    private val activity: Activity,
+    private val context: Context,
     private val mListener: QuizFragment.OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<QuizRecyclerViewAdapter.ViewHolder>() {
 
@@ -45,20 +50,33 @@ class QuizRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position]
+        val item = choices[position]
         holder.choice.text = item.choice
 
 
+        holder.choice.onClick {
+            if (item.correct) {
+                holder.choice.isSelected = true
+                holder.choice.setIconResource(R.drawable.ic_tick)
+                activity.find<View>(android.R.id.content).indefiniteSnackbar(item.info, "NEXT") {
+                    //                    context.startActivity(Intent(context, MainActivity::class.java))
+                    mListener?.onListFragmentInteraction(item)
+                }.show()
+            } else {
+                holder.choice.setIconResource(R.drawable.ic_cross)
+            }
+        }
+
         with(holder.mView) {
             tag = item
-            setOnClickListener(mOnClickListener)
+//            setOnClickListener(mOnClickListener)
         }
     }
 
-    override fun getItemCount(): Int = mValues.size
+    override fun getItemCount(): Int = choices.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val choice: TextView = mView.choice
+        val choice: MaterialButton = mView.btn_choice
 
     }
 }

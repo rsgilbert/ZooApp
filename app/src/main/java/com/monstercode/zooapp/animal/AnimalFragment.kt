@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.monstercode.zooapp.R
-import com.monstercode.zooapp.room.Category
+import com.monstercode.zooapp.room.CategoryWithAnimals
 
 /**
  * A fragment representing a list of Items.
@@ -100,7 +100,7 @@ class AnimalFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(category: Category?)
+        fun onListFragmentInteraction(category: CategoryWithAnimals?)
     }
 
     companion object {

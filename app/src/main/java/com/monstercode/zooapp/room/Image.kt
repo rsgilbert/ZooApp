@@ -2,19 +2,10 @@ package com.monstercode.zooapp.room
 
 
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
-@Entity(
-    foreignKeys = [
-        ForeignKey(
-            entity = Animal::class,
-            parentColumns = ["id"],
-            childColumns = ["animal_id"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
-)
+@Entity
 data class Image (
     @PrimaryKey
     val id: String,
@@ -23,5 +14,5 @@ data class Image (
 
     val animal_id: String
 
-)
+) : Serializable
 

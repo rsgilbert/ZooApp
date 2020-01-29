@@ -6,4 +6,6 @@
     <string name="quiz_label">Quiz</string>
     <string name="animal_label">Animals</string>
     <string name="next_question_button_text">NEXT</string>
+    <string name="count_text">~%1$d alive</string>
+    <string name="info_text">![CDATA[<b>Houdy</b>lkj<i>Yello</i>%1$s]]</string>
 </resources>
