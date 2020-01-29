@@ -48,7 +48,7 @@ class QuizActivity : AppCompatActivity(), QuizFragment.OnListFragmentInteraction
             R.id.fragment_container,
             QuizFragment()
         )
-        fragmentTransaction.addToBackStack(null)
+//        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 
